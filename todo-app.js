@@ -15,6 +15,19 @@ const todos = [{
     completed: true
 }]
 
+
+
+/********************************************************
+Push to array
+ *******************************************************/
+
+
+const pushToArray = function (whatToPush, list) {
+    const a = { text: whatToPush, completed: false }
+    const b = list
+    list.push(a)
+}
+
 /********************************************************
  Render elements
  *******************************************************/
@@ -70,19 +83,21 @@ document.querySelector('#search-todo').addEventListener('input', (e) => {
  *******************************************************/ 
 
 
- // Leta efter oklara todos
-const incompleteTodos = todos.filter(function (todo) {
-    return !todo.completed
-})
+const updateTodoList = function (todo) {
+    incompleteTodos = todo.filter(function (todo) {
+        return !todo.completed
+    })
 
-renderFilteredTodos(incompleteTodos, filters)
+    renderFilteredTodos(incompleteTodos, filters)
 
-// Skapa element för oklara todos
-const summaryUncompleted = document.createElement('h2')
-summaryUncompleted.textContent = `You have ${incompleteTodos.length} todos left:`
-// Appenda oklara todos i document. 
-document.querySelector('#todos-heading').appendChild(summaryUncompleted)
+    let summaryUncompleted = document.createElement('h2')
+    summaryUncompleted.setAttribute('id', 'summary')
+    summaryUncompleted.textContent = `You have ${incompleteTodos.length} todos left:`
 
+    // Appenda oklara todos i document. 
+    document.querySelector('#todos-heading').appendChild(summaryUncompleted)
+}
+updateTodoList(todos)
 
 
 /********************************************************
@@ -106,21 +121,6 @@ renderCompletedTodos(todos)
 
 
 /********************************************************
- Listen for klicks on button & render new todo
- *******************************************************/
-
-
-
- document.querySelector('#add-todo-button').addEventListener('click', (e) => {
-    const text = document.querySelector('#add-todo-text').value
-    const addedTodo = document.createElement('p')
-    addedTodo.textContent = text 
-    document.querySelector('#search-list').appendChild(addedTodo)
-})
-
-
-
-/********************************************************
   Render Elements 
  *******************************************************/
  
@@ -131,6 +131,25 @@ const renderElements = function (tag, attribute, attributeValue, whereToRender) 
     document.querySelector(whereToRender).appendChild(newElements)
 
 }
+
+/********************************************************
+ Listen for submits & Render new todo
+ *******************************************************/
+
+document.querySelector('#add-todo').addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const newTodo = e.target.elements.addTodo.value
+
+    if (newTodo === "") {
+        alert('You need to type something in the input field')
+    } else {
+        pushToArray(newTodo, todos)
+        document.querySelector('#summary').remove()    
+        updateTodoList(todos)
+        e.target.elements.addTodo.value = ''
+    }
+})
 
 
 /********************************************************
