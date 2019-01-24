@@ -1,20 +1,26 @@
-const todos = [{
-    text: 'Finish Moonwild website',
-    completed: true
-}, {
-    text: 'Learn React',
-    completed: false
-}, {
-    text: 'Get deeper knowledge in JS',
-    completed: true
-}, {
-    text: 'Köra en vända till tippen',
-    completed: false
-}, {
-    text: 'Skriva klart artikel',
-    completed: true
-}]
 
+/********************************************************
+The LIST
+ *******************************************************/
+
+
+let todos = []
+
+
+/********************************************************
+Check for data in local storage
+ *******************************************************/
+
+
+//Check for existing saved data
+const todosJSON = localStorage.getItem('todos')
+
+
+if (todosJSON !== null) {
+    todos = JSON.parse(todosJSON)
+}
+
+const jsonTodos = JSON.parse(todosJSON)
 
 
 /********************************************************
@@ -40,7 +46,6 @@ const render = function (todo, tag, divId) {
         document.querySelector(divId).appendChild(element)
     })
 }
-
 
 
 /********************************************************
@@ -101,7 +106,7 @@ updateTodoList(todos)
 
 
 /********************************************************
- Check and render completede todos
+ Check and render completed todos
  *******************************************************/
 
 
@@ -146,6 +151,8 @@ document.querySelector('#add-todo').addEventListener('submit', (e) => {
     } else {
         pushToArray(newTodo, todos)
         document.querySelector('#summary').remove()    
+        
+        localStorage.setItem('todos', JSON.stringify(todos))
         updateTodoList(todos)
         e.target.elements.addTodo.value = ''
     }
@@ -153,7 +160,42 @@ document.querySelector('#add-todo').addEventListener('submit', (e) => {
 
 
 /********************************************************
-  Add a p for each todo
+ Hide/Show completed
+ *******************************************************/
+
+const hideCompletedCheckbox = document.querySelector('#hide-completed')
+
+hideCompletedCheckbox.addEventListener('change', (e) => {
+    const div = document.querySelector('#finished-todos')
+    
+    if (hideCompletedCheckbox.checked) {
+        div.style.display = 'none'
+    } else {
+        div.style.display = 'block'
+    }
+}) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/********************************************************
+ The Graveyard
  *******************************************************/
 
 // todos.forEach(function (list) {
@@ -174,4 +216,6 @@ document.querySelector('#add-todo').addEventListener('submit', (e) => {
 //     //console.log(p.textContent)
 //     //p.remove()
 // });
+
+
 
