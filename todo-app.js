@@ -1,146 +1,27 @@
 
-/********************************************************
-The LIST
- *******************************************************/
-
-
-let todos = []
-
-
-/********************************************************
-Check for data in local storage
- *******************************************************/
-
-
-//Check for existing saved data
-const todosJSON = localStorage.getItem('todos')
-
-
-if (todosJSON !== null) {
-    todos = JSON.parse(todosJSON)
-}
-
-const jsonTodos = JSON.parse(todosJSON)
-
-
-/********************************************************
-Push to array
- *******************************************************/
-
-
-const pushToArray = function (whatToPush, list) {
-    const a = { text: whatToPush, completed: false }
-    const b = list
-    list.push(a)
-}
-
-/********************************************************
- Render elements
- *******************************************************/
-
-const render = function (todo, tag, divId) {
-
-    todo.forEach(function (todo) {
-        const element = document.createElement(tag)
-        element.textContent = todo.text
-        document.querySelector(divId).appendChild(element)
-    })
-}
-
-
-/********************************************************
- * Render with filters 
- *******************************************************/
-
+//The LIST
+const todos = getSavedTodos()
 
 const filters = {
     searchText: ''
 }
 
-const renderFilteredTodos = function (todos, filters) {
-    const filteredTodos = todos.filter(function (todo) {
-        return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
-    })
-
-    document.querySelector('#search-list').innerHTML = ''    
-
-    render(filteredTodos, 'p', '#search-list')
-}
-
 renderFilteredTodos(todos, filters)
 
-
-
-/********************************************************
- Listen for search in input
- *******************************************************/
-
-
+//Listen for search in input
 document.querySelector('#search-todo').addEventListener('input', (e) => {
     filters.searchText = e.target.value
     renderFilteredTodos(incompleteTodos, filters)
 })
 
-
-
-/********************************************************
- Check how many todos left and render to the document
- *******************************************************/ 
-
-
-const updateTodoList = function (todo) {
-    incompleteTodos = todo.filter(function (todo) {
-        return !todo.completed
-    })
-
-    renderFilteredTodos(incompleteTodos, filters)
-
-    let summaryUncompleted = document.createElement('h2')
-    summaryUncompleted.setAttribute('id', 'summary')
-    summaryUncompleted.textContent = `You have ${incompleteTodos.length} todos left:`
-
-    // Appenda oklara todos i document. 
-    document.querySelector('#todos-heading').appendChild(summaryUncompleted)
-}
+// Check how many todos left and update/render to the DOM
 updateTodoList(todos)
 
 
-/********************************************************
- Check and render completed todos
- *******************************************************/
-
-
-const renderCompletedTodos = function (todos) {
-    const completedTodos = todos.filter( (todos) => {
-        return todos.completed
-    })
-
-    const summaryCompleted = document.createElement('h2')
-    summaryCompleted.textContent = `You have completed ${completedTodos.length} todos:`
-    document.querySelector('#finished-todos').appendChild(summaryCompleted)
-    
-    render(completedTodos, 'p', '#finished-todos')
-
-}
+//Check and render completed todos
 renderCompletedTodos(todos)
 
-
-/********************************************************
-  Render Elements 
- *******************************************************/
- 
-const renderElements = function (tag, attribute, attributeValue, whereToRender) {
-
-    const newElements = document.createElement(tag)
-    newElements.setAttribute(attribute, attributeValue)
-    document.querySelector(whereToRender).appendChild(newElements)
-
-}
-
-/********************************************************
- Listen for submits & Render new todo
- *******************************************************/
-
+ //Listen for submits & Render new todo
 document.querySelector('#add-todo').addEventListener('submit', (e) => {
     e.preventDefault()
 
@@ -158,11 +39,7 @@ document.querySelector('#add-todo').addEventListener('submit', (e) => {
     }
 })
 
-
-/********************************************************
- Hide/Show completed
- *******************************************************/
-
+//Hide/Show completed
 const hideCompletedCheckbox = document.querySelector('#hide-completed')
 
 hideCompletedCheckbox.addEventListener('change', (e) => {
