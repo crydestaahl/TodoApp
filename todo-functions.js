@@ -36,7 +36,7 @@ const renderFilteredTodos = function (todos, filters) {
 
     document.querySelector('#search-list').innerHTML = ''
 
-    // render(filteredTodos, 'p', '#search-list')
+    
     renderWithButtons(todos, '#search-list')
 }
 
@@ -44,8 +44,8 @@ const renderFilteredTodos = function (todos, filters) {
 Update todo array
  *******************************************************/
 
-const updateTodoList = function (todo) {
-    incompleteTodos = todo.filter(function (todo) {
+const updateTodoList = function (todos) {
+    incompleteTodos = todos.filter(function (todo) {
         return !todo.completed
     })
 
@@ -107,16 +107,66 @@ const renderWithButtons = function (todoList, divId) {
 
     todoList.forEach(function (todo) {
         const div = document.createElement('div')
-        
-        const content = `
-            <div>
-                <input type="checkbox">
-                <span>${todo.text}</span>
-                <button>X</button>
-            </div>    
-        `   
-        div.innerHTML = content;
+        const input = document.createElement('input')
+        input.setAttribute('type', 'checkbox')
+        const span = document.createElement('span')
+        span.textContent = todo.text
+        const button = document.createElement('button')
+        button.textContent = 'X'
+
+        //set remove function on button 
+        button.addEventListener('click', function () {
+            removeTodo(todo.id) 
+        })
+
+        div.appendChild(input)
+        div.appendChild(span)
+        div.appendChild(button)
         document.querySelector(divId).appendChild(div)
     })
-   
 }
+
+/********************************************************
+ Update summary text
+ *******************************************************/
+ 
+    
+
+/********************************************************
+ Save todos
+ *******************************************************/
+const saveTodos = function (todos) {
+    localStorage.setItem('todos', JSON.stringify(todos))
+}
+
+
+/********************************************************
+ Remove todos by ID
+ *******************************************************/
+
+const removeTodo = function (id) {
+    const todoIndex = todos.findIndex(function (todo) {
+        return todo.id === id
+    })
+
+    if (todoIndex > -1) {
+        todos.splice(todoIndex, 1) 
+        saveTodos(todos)  
+        document.querySelector('#search-list').innerHTML = ''  
+        renderFilteredTodos(todos, filters)
+        document.querySelector('#summary').remove() 
+        let summaryUncompleted = document.createElement('h2')
+        summaryUncompleted.setAttribute('id', 'summary')
+        summaryUncompleted.textContent = `You have ${todos.length} todos left:`
+        document.querySelector('#todos-heading').appendChild(summaryUncompleted)   
+    }
+
+
+    //console.log(id)
+    //console.log(todos)
+    // const newTodos = todos.filter(todo => todo.id !== id);
+    //saveTodos(todos)
+    //renderNewTodoList(todos)
+    //console.log(newTodos)
+}
+

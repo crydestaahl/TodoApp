@@ -1,6 +1,6 @@
 
 //The LIST
-const todos = getSavedTodos()
+let todos = getSavedTodos()
 
 const filters = {
     searchText: ''
@@ -32,8 +32,7 @@ document.querySelector('#add-todo').addEventListener('submit', (e) => {
     } else {
         pushToArray(newTodo, todos)
         document.querySelector('#summary').remove()    
-        
-        localStorage.setItem('todos', JSON.stringify(todos))
+        saveTodos(todos)
         updateTodoList(todos)
         e.target.elements.addTodo.value = ''
     }
@@ -51,8 +50,6 @@ hideCompletedCheckbox.addEventListener('change', (e) => {
         div.style.display = 'block'
     }
 }) 
-
-
 
 
 
