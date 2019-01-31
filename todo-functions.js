@@ -107,38 +107,55 @@ const renderWithButtons = function (todoList, divId) {
 
     todoList.forEach(function (todo) {
         const div = document.createElement('div')
-        const input = document.createElement('input')
-        input.setAttribute('type', 'checkbox')
+        div.id = 'uncompleted'
+
+        const checkbox = document.createElement('input')
+        checkbox.setAttribute('type', 'checkbox')
+        checkbox.checked = todo.completed
+        
+        checkbox.addEventListener('change', () => {
+            console.log('Shit got changed!')
+            toggleTodo(todo.id);
+        })
+
         const span = document.createElement('span')
         span.textContent = todo.text
+
         const button = document.createElement('button')
         button.textContent = 'X'
 
+        
         //set remove function on button 
         button.addEventListener('click', function () {
             removeTodo(todo.id) 
         })
-
-        div.appendChild(input)
+        div.appendChild(checkbox)
         div.appendChild(span)
         div.appendChild(button)
         document.querySelector(divId).appendChild(div)
     })
 }
 
-/********************************************************
- Update summary text
- *******************************************************/
- 
+const toggleTodo = id => {
+    const todoIndex = todos.findIndex(todo => todo.id === id);
     
+    todos[todoIndex].completed = true;
+    document.querySelector('#summary').remove()
+    updateTodoList(todos)
+    saveTodos(todos);
+
+    const finishedTodosDiv = document.querySelector('#finished-todos')
+    finishedTodosDiv.innerHTML = '';
+    renderCompletedTodos(todos);
+}
 
 /********************************************************
  Save todos
  *******************************************************/
-const saveTodos = function (todos) {
+
+ const saveTodos = function (todos) {
     localStorage.setItem('todos', JSON.stringify(todos))
 }
-
 
 /********************************************************
  Remove todos by ID
