@@ -1,21 +1,23 @@
+'use strict'
 /********************************************************
  Check for saved data in local storage
  *******************************************************/
 
-const getSavedTodos = function () {
+const getSavedTodos = () => {
     const todosJSON = localStorage.getItem('todos')
 
-    if (todosJSON !== null) {
-        return JSON.parse(todosJSON)
-    }
-    return []
+    try {
+        return !todosJSON ? JSON.parse(todosJSON) : []
+    } catch (e) {
+        return []
+    }    
 }
 
 /********************************************************
 Push to array 
  *******************************************************/
 
-const pushToArray = function (whatToPush, list) {
+const pushToArray = (whatToPush, list) => {
     const a = { 
         text: whatToPush, 
         completed: false, 
@@ -29,25 +31,21 @@ const pushToArray = function (whatToPush, list) {
 Render with filters 
  *******************************************************/
 
-const renderFilteredTodos = function (todos, filters) {
-    const filteredTodos = todos.filter(function (todo) {
-        return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
-    })
-
+const renderFilteredTodos = (todos, filters) => {
+    const filteredTodos = todos.filter((todo) => 
+        todo.text.toLowerCase().includes(filters.searchText.toLowerCase()))
+   
     document.querySelector('#search-list').innerHTML = ''
-
     
-    renderWithButtons(todos, '#search-list')
+    renderWithButtons(filteredTodos, '#search-list')
 }
 
 /********************************************************
 Update todo array
  *******************************************************/
 
-const updateTodoList = function (todos) {
-    incompleteTodos = todos.filter(function (todo) {
-        return !todo.completed
-    })
+const updateTodoList = (todos) => {
+    let incompleteTodos = todos.filter((todo) => !todo.completed)
 
     renderFilteredTodos(incompleteTodos, filters)
 
@@ -63,7 +61,7 @@ const updateTodoList = function (todos) {
  Check and render completed todos
  *******************************************************/
 
-const renderCompletedTodos = function (todos) {
+const renderCompletedTodos = (todos) => {
     const completedTodos = todos.filter((todos) => {
         return todos.completed
     })
@@ -80,7 +78,7 @@ const renderCompletedTodos = function (todos) {
   Render Elements 
  *******************************************************/
 
-const renderElements = function (tag, attribute, attributeValue, whereToRender) {
+const renderElements = (tag, attribute, attributeValue, whereToRender) => {
 
     const newElements = document.createElement(tag)
     newElements.setAttribute(attribute, attributeValue)
@@ -91,9 +89,8 @@ const renderElements = function (tag, attribute, attributeValue, whereToRender) 
 /********************************************************
   Render Elements II
  *******************************************************/
-const render = function (todo, tag, divId) {
-
-    todo.forEach(function (todo) {
+const render = (todo, tag, divId) => {
+    todo.forEach((todo) => {
         const element = document.createElement(tag)
         element.textContent = todo.text
         document.querySelector(divId).appendChild(element)  
@@ -103,9 +100,9 @@ const render = function (todo, tag, divId) {
 /********************************************************
   Render Uncompleted Elements With Buttons 
  *******************************************************/
-const renderWithButtons = function (todoList, divId) {
+const renderWithButtons = (todoList, divId) => {
 
-    todoList.forEach(function (todo) {
+    todoList.forEach((todo) => {
         const div = document.createElement('div')
         div.id = 'uncompleted'
 
@@ -126,7 +123,7 @@ const renderWithButtons = function (todoList, divId) {
 
         
         //set remove function on button 
-        button.addEventListener('click', function () {
+        button.addEventListener('click', () => {
             removeTodo(todo.id) 
         })
         div.appendChild(checkbox)
@@ -153,18 +150,14 @@ const toggleTodo = id => {
  Save todos
  *******************************************************/
 
- const saveTodos = function (todos) {
-    localStorage.setItem('todos', JSON.stringify(todos))
-}
-
+ const saveTodos = (todos) => localStorage.setItem('todos', JSON.stringify(todos))
+ 
 /********************************************************
  Remove todos by ID
  *******************************************************/
 
-const removeTodo = function (id) {
-    const todoIndex = todos.findIndex(function (todo) {
-        return todo.id === id
-    })
+const removeTodo = (id) => {
+    const todoIndex = todos.findIndex((todo) => todo.id === id)
 
     if (todoIndex > -1) {
         todos.splice(todoIndex, 1) 

@@ -1,3 +1,4 @@
+'use strict'
 
 //The LIST
 let todos = getSavedTodos()
@@ -10,6 +11,7 @@ renderFilteredTodos(todos, filters)
 
 //Listen for search in input
 document.querySelector('#search-todo').addEventListener('input', (e) => {
+    let incompleteTodos = todos.filter((todo) => !todo.completed)
     filters.searchText = e.target.value
     renderFilteredTodos(incompleteTodos, filters)
 })
@@ -27,7 +29,7 @@ document.querySelector('#add-todo').addEventListener('submit', (e) => {
 
     const newTodo = e.target.elements.addTodo.value
 
-    if (newTodo === "") {
+    if (!newTodo) {
         alert('You need to type something in the input field')
     } else {
         pushToArray(newTodo, todos)
