@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./hover.css">
+    <link rel="stylesheet" href="./style.css">
     <title>The Todo App</title>
 </head>
 <body>
-    <h1>Todos</h1>
-    <div id="todos-heading"></div>
+    <legend class="todo-wrap">
+            <h1>Todos:</h1>
         
-    <form id="add-todo" action="">
-        <input type="text" placeholder="Add todo..." name="addTodo">
-        <button>Submit</button>
-    </form>
+            <div id="todos-heading"></div>
+                
+            <div id="search-list"> </div>
 
-    <input type="text" id="search-todo" placeholder="Search Todo...">
-    
-    <div id="search-list"> </div>
-  
-   
+            <form id="add-todo" action="">
+                <input type="text" placeholder="Add todo..." name="addTodo">
+                <button class="hvr-ripple-out">Submit</button>
+            </form>
+            
+            <input type="text" id="search-todo" placeholder="Search Todo...">
         
-    
-
-
-    <div id="finished-todos"></div>
-    <form action="">
-        <input id="hide-completed" type="checkbox">Hide Completed
-    </form>
+            <div id="finished-todos"></div>
+            <form action="">
+                <input id="hide-completed" type="checkbox">Hide Completed
+            </form>
+    </legend>
 
     <script src="./uuidv4.js"></script>
     <script src="./todo-functions.js"></script>

@@ -5,12 +5,14 @@
 
 const getSavedTodos = () => {
     const todosJSON = localStorage.getItem('todos')
+    
+    
 
     try {
-        return !todosJSON ? JSON.parse(todosJSON) : []
+        return todosJSON ? JSON.parse(todoJSON) : []
     } catch (e) {
         return []
-    }    
+    }
 }
 
 /********************************************************
@@ -32,6 +34,7 @@ Render with filters
  *******************************************************/
 
 const renderFilteredTodos = (todos, filters) => {
+  
     const filteredTodos = todos.filter((todo) => 
         todo.text.toLowerCase().includes(filters.searchText.toLowerCase()))
    
@@ -45,6 +48,7 @@ Update todo array
  *******************************************************/
 
 const updateTodoList = (todos) => {
+
     let incompleteTodos = todos.filter((todo) => !todo.completed)
 
     renderFilteredTodos(incompleteTodos, filters)
@@ -62,6 +66,7 @@ const updateTodoList = (todos) => {
  *******************************************************/
 
 const renderCompletedTodos = (todos) => {
+
     const completedTodos = todos.filter((todos) => {
         return todos.completed
     })
@@ -119,7 +124,7 @@ const renderWithButtons = (todoList, divId) => {
         span.textContent = todo.text
 
         const button = document.createElement('button')
-        button.textContent = 'X'
+        button.textContent = 'x'
 
         
         //set remove function on button 
