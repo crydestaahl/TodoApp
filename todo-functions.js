@@ -1,19 +1,17 @@
 'use strict'
+
 /********************************************************
  Check for saved data in local storage
  *******************************************************/
 
-const getSavedTodos = () => {
+let getSavedTodos = () => {
     const todosJSON = localStorage.getItem('todos')
     
-    
-
-    try {
-        return todosJSON ? JSON.parse(todoJSON) : []
-    } catch (e) {
+    if (!todosJSON) {
         return []
+    } else
+        return JSON.parse(todosJSON)
     }
-}
 
 /********************************************************
 Push to array 
@@ -34,10 +32,9 @@ Render with filters
  *******************************************************/
 
 const renderFilteredTodos = (todos, filters) => {
-  
-    const filteredTodos = todos.filter((todo) => 
-        todo.text.toLowerCase().includes(filters.searchText.toLowerCase()))
-   
+    const filteredTodos = todos.filter(todo => {
+       return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+    })        
     document.querySelector('#search-list').innerHTML = ''
     
     renderWithButtons(filteredTodos, '#search-list')
@@ -65,9 +62,9 @@ const updateTodoList = (todos) => {
  Check and render completed todos
  *******************************************************/
 
-const renderCompletedTodos = (todos) => {
+const renderCompletedTodos = function (todos) {
 
-    const completedTodos = todos.filter((todos) => {
+    const completedTodos = todos.filter(function(todos) {
         return todos.completed
     })
 
@@ -83,7 +80,7 @@ const renderCompletedTodos = (todos) => {
   Render Elements 
  *******************************************************/
 
-const renderElements = (tag, attribute, attributeValue, whereToRender) => {
+const renderElements = function (tag, attribute, attributeValue, whereToRender) {
 
     const newElements = document.createElement(tag)
     newElements.setAttribute(attribute, attributeValue)
@@ -94,8 +91,8 @@ const renderElements = (tag, attribute, attributeValue, whereToRender) => {
 /********************************************************
   Render Elements II
  *******************************************************/
-const render = (todo, tag, divId) => {
-    todo.forEach((todo) => {
+const render = function (todo, tag, divId) {
+    todo.forEach(todo => {
         const element = document.createElement(tag)
         element.textContent = todo.text
         document.querySelector(divId).appendChild(element)  
@@ -125,7 +122,6 @@ const renderWithButtons = (todoList, divId) => {
 
         const button = document.createElement('button')
         button.textContent = 'x'
-
         
         //set remove function on button 
         button.addEventListener('click', () => {
@@ -175,13 +171,5 @@ const removeTodo = (id) => {
         summaryUncompleted.textContent = `You have ${todos.length} todos left:`
         document.querySelector('#todos-heading').appendChild(summaryUncompleted)   
     }
-
-
-    //console.log(id)
-    //console.log(todos)
-    // const newTodos = todos.filter(todo => todo.id !== id);
-    //saveTodos(todos)
-    //renderNewTodoList(todos)
-    //console.log(newTodos)
 }
 

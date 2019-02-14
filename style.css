@@ -90,6 +90,10 @@ input::placeholder {
     width: 4%;
 }
 
+#uncompleted input:checked {
+    background-color: #E8F20F; 
+}
+
 #uncompleted span {
     font-size: 14px;
     width: 100%;

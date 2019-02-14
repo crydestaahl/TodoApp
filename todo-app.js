@@ -1,13 +1,18 @@
 'use strict'
 
 //The LIST
+
+
 let todos = getSavedTodos()
+
 
 const filters = {
     searchText: ''
 }
 
 renderFilteredTodos(todos, filters)
+
+renderWithButtons(todos, '#search-list')
 
 //Listen for search in input
 document.querySelector('#search-todo').addEventListener('input', (e) => {
